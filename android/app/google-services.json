@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "437854727145",
+    "project_id": "castilla-emergency-response",
+    "storage_bucket": "castilla-emergency-response.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:437854727145:android:39221f81a1ace8af013978",
+        "android_client_info": {
+          "package_name": "com.cer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "437854727145-osbm9mgi2vhcr3o38b9m24hltthght2v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBs-Deeyegts5ClAbaVFu5nKCTbYSAVIDE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "437854727145-osbm9mgi2vhcr3o38b9m24hltthght2v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
