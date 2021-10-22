@@ -7,24 +7,28 @@ import { RootState } from '../../../store/types'
 import { Avatar } from 'react-native-paper'
 import { useTheme } from '../../../provider'
 import { ListButton } from './components'
+import { FirebaseService } from '../../../services/firebase.services'
 
 export const UserProfile: React.FC = () => {
   const { theme } = useTheme()
   const { user } = useSelector((state: RootState) => state.authReducer)
   const dispatch = useDispatch()
 
-  const signOut = () => {
-    dispatch({ type: 'TOGGLE_LOGGED_IN' })
+  const signOut = async () => {
+    try {
+      await FirebaseService.signOut()
+      dispatch({ type: 'TOGGLE_LOGGED_IN' })
+    } catch (err) {
+      console.error(err)
+    }
   }
   return (
     <View>
       <View style={[styles.parent]}>
         <LinearGradient colors={['#d12222', '#521918']} style={[styles.child]}>
           <View style={styles.wrapper}>
-            <Text style={styles.headerText}>
-              {user?.fullName || 'Juan Tamad'}
-            </Text>
-            <Avatar.Image source={{ uri: placeHolderImage }} size={120} />
+            <Text style={styles.headerText}>{user?.fullName}</Text>
+            <Avatar.Image source={{ uri: user?.profilePic }} size={120} />
             <TouchableOpacity
               style={{
                 marginTop: -30,
@@ -35,14 +39,14 @@ export const UserProfile: React.FC = () => {
                 color="#521918"
                 size={30}
                 style={{
-                  backgroundColor: theme.colors.background,
+                  backgroundColor: theme?.colors.background,
                 }}
               />
             </TouchableOpacity>
           </View>
         </LinearGradient>
       </View>
-      <View style={{ height: 1, backgroundColor: theme.colors.border }} />
+      <View style={{ height: 1, backgroundColor: theme?.colors.border }} />
       <ListButton buttonText="Preferences" />
       <ListButton buttonText="Terms and Conditions" />
       <ListButton buttonText="Privacy Policy" />
@@ -50,6 +54,3 @@ export const UserProfile: React.FC = () => {
     </View>
   )
 }
-
-const placeHolderImage =
-  'https://firebasestorage.googleapis.com/v0/b/castilla-emergency-response.appspot.com/o/profile.jpg?alt=media&token=951ff73e-f2cf-4546-a900-3efe6846263c'

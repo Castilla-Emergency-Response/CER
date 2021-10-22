@@ -1,12 +1,9 @@
 import app, { firebase } from '@react-native-firebase/app'
 import '@react-native-firebase/auth'
-import '@react-native-firebase/functions'
-import '@react-native-firebase/database'
 import '@react-native-firebase/firestore'
 
-// import DevicesFBServices from './devicesFB.services'
-// import MessagingFBServices from './messagingFB.services'
 import config from '../config/firebase-config.json'
+import { errorHandler } from '../utils'
 
 class Firebase {
   constructor() {
@@ -17,7 +14,6 @@ class Firebase {
     this.authUser = {}
     this.auth = app.auth()
     this.db = app.firestore()
-    this.functions = app.functions()
 
     this.auth.onAuthStateChanged((user) => {
       this.authUser = { user }
@@ -38,32 +34,14 @@ class Firebase {
     return []
   }
 
-  processSnapshots({ query, setLastRef = Function.prototype } = {}) {
-    return query
-      .get()
-      .then((querySnapshot) => {
-        const data = []
-
-        setLastRef(querySnapshot.docs[querySnapshot.docs.length - 1])
-
-        querySnapshot.forEach((doc) => {
-          data.push({
-            id: doc.id,
-            ...doc.data(),
-          })
-        })
-
-        return [null, data]
-      })
-      .catch((error) => {
-        return [error]
-      })
-  }
-
   signIn({ email, password }) {
     return this.auth
       .signInWithEmailAndPassword(email, password)
-      .catch((err) => err)
+      .then((res) => res)
+      .catch((err) => {
+        errorHandler(err)
+        return err
+      })
   }
 
   createUserProfile = ({
@@ -71,39 +49,27 @@ class Firebase {
     username,
     fullName,
     email,
-    social = {},
-    avatar = TEMPORARY_AVATAR,
-    cover = TEMPORARY_COVER,
+    profilePic = TEMPORARY_AVATAR,
   } = {}) => {
-    const newSocial = {
-      location: '',
-      biography: '',
-      company: '',
-      education: '',
-      phone: '',
-      birthday: null,
-      facebook: 'https://www.facebook.com/',
-      twitter: 'https://www.twitter.com/',
-      instagram: 'https://www.instagram.com/',
-      linkedin: 'https://www.linkedin.com/',
-      tumblr: 'https://www.tumblr.com/',
-      mediaArray: [],
-      ...social,
-    }
-
-    const user = {
-      id,
-      avatar,
-      cover,
-      username,
-      fullName,
-      email,
-      social: newSocial,
-    }
-
-    return this.setFBDoc({
+    return this.setDocument({
       doc: id,
-      docData: user,
+      value: {
+        id,
+        profilePic,
+        username,
+        fullName,
+        email,
+        age: null,
+        address: null,
+        location: {
+          long: '',
+          lat: '',
+        },
+        online: true,
+        userType: 'consumer',
+        department: null,
+        phoneNumber: null,
+      },
     })
   }
 
@@ -125,18 +91,21 @@ class Firebase {
         await currentUser.updateProfile({
           username,
           displayName: fullName,
-          photoURL: TEMPORARY_AVATAR,
+          profilePic: TEMPORARY_AVATAR,
         })
       })
       .then(() => ({ user: app.auth().currentUser }))
-      .catch((err) => err)
+      .catch((err) => {
+        errorHandler(err)
+        return err
+      })
   }
 
-  updateProfile({ displayName, username, photoURL, ...rest }) {
+  updateProfile({ displayName, username, profilePic, ...rest }) {
     const profile = {
       username,
       displayName,
-      photoURL,
+      profilePic,
       ...rest,
     }
 
@@ -144,247 +113,23 @@ class Firebase {
   }
 
   signOut() {
-    // const [token] = await MessagingFBServices.getFCMToken()
-
-    // await DevicesFBServices.deactivateUserDevice(token)
-
     return this.auth.signOut()
   }
 
-  sendPasswordResetEmail(emailAddress) {
-    return this.auth
-      .sendPasswordResetEmail(emailAddress)
-      .then(() => ({ success: true }))
-      .catch((error) => ({ error }))
-  }
-
-  getFBCollectionData({
-    endCollection,
-    parentCollection = 'users',
-    parentDoc,
-  } = {}) {
-    const [authError] = this.checkAuthorization()
-
-    if (authError) {
-      return [authError]
-    }
-
+  setDocument = ({ collection = 'users', doc, value = {} } = {}) => {
     return this.db
-      .collection(parentCollection)
-      .doc(parentDoc || this.auth.currentUser.uid)
-      .collection(endCollection)
-  }
-
-  getFBCollectionWhere = ({
-    parentCollection = 'users',
-    key,
-    value,
-    operator = '==',
-  } = {}) => {
-    const [authError] = this.checkAuthorization()
-
-    if (authError) {
-      return [authError]
-    }
-
-    return this.db.collection(parentCollection).where(key, operator, value)
-  }
-
-  getFBCollectionDataWhereBool({
-    endCollection,
-    key,
-    value,
-    parentCollection = 'users',
-    parentDoc,
-  } = {}) {
-    const [authError] = this.checkAuthorization()
-
-    if (authError) {
-      return [authError]
-    }
-
-    return this.db
-      .collection(parentCollection)
-      .doc(parentDoc || this.auth.currentUser.uid)
-      .collection(endCollection)
-      .where(key, '==', value)
-  }
-
-  addFBData({ values, doc, endCollection, parentCollection = 'users' } = {}) {
-    const [authError] = this.checkAuthorization()
-
-    if (authError) {
-      return [authError]
-    }
-
-    return this.db
-      .collection(parentCollection)
-      .doc(doc || this.auth.currentUser.uid)
-      .collection(endCollection)
-      .add(values)
-  }
-
-  updateFBData({
-    values,
-    doc,
-    endCollection,
-    parentCollection = 'users',
-  } = {}) {
-    const { id } = values
-    const [authError] = this.checkAuthorization()
-
-    if (authError) {
-      return [authError]
-    }
-
-    const clone = { ...values }
-    delete clone.id
-
-    return this.db
-      .collection(parentCollection)
-      .doc(doc || this.auth.currentUser.uid)
-      .collection(endCollection)
-      .doc(id)
-      .update({
-        ...clone,
-      })
-  }
-
-  addFBDoc = ({ parentCollection = 'users', docData = {} } = {}) => {
-    const [authError] = this.checkAuthorization()
-
-    if (authError) {
-      return [authError]
-    }
-
-    return this.db
-      .collection(parentCollection)
-      .add(docData)
-      .then((res) => [null, res])
-      .catch((err) => [err])
-  }
-
-  setFBDoc = ({ parentCollection = 'users', doc, docData = {} } = {}) => {
-    const [authError] = this.checkAuthorization()
-
-    if (authError) {
-      return [authError]
-    }
-
-    return this.db
-      .collection(parentCollection)
+      .collection(collection)
       .doc(doc)
-      .set({
-        ...docData,
-      })
-      .then((res) => [null, res])
-      .catch((err) => [err])
+      .set(value)
+      .then((res) => res)
+      .catch((err) => err)
   }
 
-  getFBData({ id, parentDoc, endCollection, parentCollection = 'users' } = {}) {
-    const [authError] = this.checkAuthorization()
-
-    if (authError) {
-      return [authError]
-    }
-
-    return this.db
-      .collection(parentCollection)
-      .doc(parentDoc || this.auth.currentUser.uid)
-      .collection(endCollection)
-      .doc(id)
-  }
-
-  getFBDoc = ({ parentCollection = 'users', doc } = {}) => {
-    const [authError] = this.checkAuthorization()
-
-    if (authError) {
-      return [authError]
-    }
-
-    const colllectionDoc = doc ? doc : this.auth.currentUser.uid
-
-    return this.db.collection(parentCollection).doc(colllectionDoc)
-  }
-
-  deleteFBDoc = ({ parentCollection, doc } = {}) => {
-    const [authError] = this.checkAuthorization()
-
-    if (authError) {
-      return [authError]
-    }
-
-    return this.db
-      .collection(parentCollection)
-      .doc(doc)
-      .delete()
-      .then((res) => [null, res])
-      .catch((err) => [err])
-  }
-
-  updateFBDoc({ doc, docData, parentDoc, parentCollection = 'users' } = {}) {
-    const [authError] = this.checkAuthorization()
-
-    if (authError) {
-      return [authError]
-    }
-
-    return this.db
-      .collection(parentCollection)
-      .doc(parentDoc || this.auth.currentUser.uid)
-      .update({
-        [doc]: docData,
-      })
-  }
-
-  updateMultipleFBDoc({
-    docs = {},
-    parentDoc,
-    parentCollection = 'users',
-  } = {}) {
-    const [authError] = this.checkAuthorization()
-
-    if (authError) {
-      return [authError]
-    }
-
-    return this.db
-      .collection(parentCollection)
-      .doc(parentDoc || this.auth.currentUser.uid)
-      .update({
-        ...docs,
-      })
-  }
-
-  async deleteMultipleFBData({
-    ids,
-    endCollection,
-    parentCollection = 'users',
-  } = {}) {
-    const [authError] = this.checkAuthorization()
-
-    if (authError) {
-      return [authError]
-    }
-
-    let batch = this.db.batch()
-    if (ids && ids.length > 0) {
-      ids.forEach((id) => {
-        let dataRef = this.db
-          .collection(parentCollection)
-          .doc(`${this.auth.currentUser.uid}`)
-          .collection(endCollection)
-          .doc(id)
-        batch.delete(dataRef)
-      })
-      batch.commit()
-    }
+  processSnapshot({ collection = 'users', doc }) {
+    return this.db.collection(collection).doc(doc)
   }
 }
 const TEMPORARY_AVATAR =
-  'https://firebasestorage.googleapis.com/v0/b/loanpalz/o/static%2Fprofile-default.jpg?alt=media'
-
-const TEMPORARY_COVER =
   'https://firebasestorage.googleapis.com/v0/b/loanpalz/o/static%2Fprofile-default.jpg?alt=media'
 
 export const FirebaseService = new Firebase()

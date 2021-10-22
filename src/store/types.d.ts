@@ -6,18 +6,22 @@ export declare type AppDispatch = typeof store.dispatch
 export declare type User = {
   id: string
   fullName: string
-  email: string
-  activeStatus: boolean
+  email: String
   age: number
+  phoneNumber?: number
   address: string
+  userType: 'admin' | 'respondent' | 'consumer'
+  online: boolean
   gender?: string
-  work?: string
-  school?: string
-  bio?: string
-  profileImages?: string[]
-  tags?: string[]
+  department?: 'medical' | 'police' | 'fire' | 'disaster' | null
+  location?: {
+    long: string
+    lat: string
+  }
+  profilePic?: string
 }
 
 export declare type Action = {
-  type: string
+  type: 'TOGGLE_LOGGED_IN' | 'SET_USER' | 'UPDATE_USER' | 'RESET_USER'
+  payload?: User | boolean
 }
