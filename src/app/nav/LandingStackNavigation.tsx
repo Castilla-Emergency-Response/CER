@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { createStackNavigator } from '@react-navigation/stack'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
 //routes
 import { landingStack, authStack } from '../routes'
@@ -12,7 +12,7 @@ import { RootState } from '../../store/types'
 //screens
 import { SplashScreen } from '../../screens'
 
-const Stack = createStackNavigator()
+const Stack = createNativeStackNavigator()
 
 export const LandingStackNavigation = () => {
   const { loggedIn } = useSelector((state: RootState) => state.authReducer)
