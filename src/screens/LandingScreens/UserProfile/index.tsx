@@ -2,7 +2,7 @@ import React from 'react'
 import { Text, View, TouchableOpacity } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import styles from './styles'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { RootState } from '../../../store/types'
 import { Avatar } from 'react-native-paper'
 import { useTheme } from '../../../provider'
@@ -11,6 +11,11 @@ import { ListButton } from './components'
 export const UserProfile: React.FC = () => {
   const { theme } = useTheme()
   const { user } = useSelector((state: RootState) => state.authReducer)
+  const dispatch = useDispatch()
+
+  const signOut = () => {
+    dispatch({ type: 'TOGGLE_LOGGED_IN' })
+  }
   return (
     <View>
       <View style={[styles.parent]}>
@@ -41,7 +46,7 @@ export const UserProfile: React.FC = () => {
       <ListButton buttonText="Preferences" />
       <ListButton buttonText="Terms and Conditions" />
       <ListButton buttonText="Privacy Policy" />
-      <ListButton buttonText="Sign Out" />
+      <ListButton buttonText="Sign Out" onPress={signOut} />
     </View>
   )
 }

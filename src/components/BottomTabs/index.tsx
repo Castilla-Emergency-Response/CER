@@ -16,9 +16,9 @@ export const BottomTabs: React.FC<any> = ({
   const { width } = useWindowDimensions()
   const focusedOptions = descriptors[state.routes[state.index].key].options
 
-  const { likes, matches } = useSelector(
+  const { chatNotif } = useSelector(
     // eslint-disable-next-line no-shadow
-    (state: RootState) => state.likesReducer,
+    (state: RootState) => state.chatsReducer,
   )
 
   if (focusedOptions.tabBarVisible === false) {
@@ -78,7 +78,7 @@ export const BottomTabs: React.FC<any> = ({
               onLongPress={onLongPress}
               style={{ flex: 1, alignItems: 'center', paddingTop: 5 }}>
               <>
-                {route.name === 'Likes' && likes?.length ? (
+                {route.name === 'Chats' && chatNotif ? (
                   <View
                     style={[
                       styles.badgeContainer,
@@ -92,24 +92,7 @@ export const BottomTabs: React.FC<any> = ({
                         },
                         styles.badge,
                       ]}>
-                      {likes}
-                    </Text>
-                  </View>
-                ) : route.name === 'Matches' && matches?.length ? (
-                  <View
-                    style={[
-                      styles.badgeContainer,
-                      { backgroundColor: theme?.colors.background },
-                    ]}>
-                    <Text
-                      style={[
-                        {
-                          backgroundColor: theme?.colors.notification,
-                          color: '#fff',
-                        },
-                        styles.badge,
-                      ]}>
-                      {matches}
+                      {chatNotif}
                     </Text>
                   </View>
                 ) : (

@@ -1,4 +1,4 @@
-import { Chat, Dashboard, UserProfile } from '../../screens'
+import { Chats, Dashboard, UserProfile } from '../../screens'
 import { Screens } from '../types'
 
 export const landingTab: Screens = [
@@ -14,8 +14,8 @@ export const landingTab: Screens = [
     },
   },
   {
-    name: 'Chat',
-    component: Chat,
+    name: 'Chats',
+    component: Chats,
     options: {
       icon: {
         name: 'md-chatbubbles',
