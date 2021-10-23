@@ -13,6 +13,7 @@ export default StyleSheet.create<Styles>({
     flexGrow: 1,
     justifyContent: 'flex-end',
     height: 150,
+    elevation: 10,
   },
   headerText: {
     fontWeight: '700',

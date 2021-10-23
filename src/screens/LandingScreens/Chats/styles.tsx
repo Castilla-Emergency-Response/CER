@@ -8,6 +8,7 @@ declare type String = {
 export default StyleSheet.create<String>({
   header: {
     flexGrow: 1,
+    elevation: 10,
   },
   headerText: {
     fontWeight: '700',
