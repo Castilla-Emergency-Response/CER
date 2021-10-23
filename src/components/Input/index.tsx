@@ -7,7 +7,12 @@ interface Props extends TextInputProps {
   containerStyle?: ViewStyle
 }
 
-export const Input: React.FC<Props> = ({ containerStyle, style, ...rest }) => {
+export const Input: React.FC<Props> = ({
+  containerStyle,
+  style,
+  placeholderTextColor,
+  ...rest
+}) => {
   const { theme } = useTheme()
   return (
     <View
@@ -16,7 +21,11 @@ export const Input: React.FC<Props> = ({ containerStyle, style, ...rest }) => {
         { borderColor: theme?.colors.primary },
         containerStyle,
       ]}>
-      <TextInput style={[styles.textInput, style]} {...rest} />
+      <TextInput
+        style={[styles.textInput, { color: theme?.colors.text }, style]}
+        placeholderTextColor={placeholderTextColor || theme?.colors.text}
+        {...rest}
+      />
     </View>
   )
 }

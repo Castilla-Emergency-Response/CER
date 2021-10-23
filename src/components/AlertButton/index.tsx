@@ -9,19 +9,19 @@ export const AlertButton: React.FC<TouchableOpacityProps> = (props) => {
     <TouchableOpacity {...props}>
       <View
         style={{
-          backgroundColor: theme?.colors.green3,
+          backgroundColor: theme?.colors.hue3,
           padding: 20,
           borderRadius: 150,
         }}>
         <View
           style={{
-            backgroundColor: theme?.colors.green2,
+            backgroundColor: theme?.colors.hue2,
             padding: 20,
             borderRadius: 100,
           }}>
           <View
             style={{
-              backgroundColor: theme?.colors.green1,
+              backgroundColor: theme?.colors.hue1,
               padding: 20,
               borderRadius: 50,
             }}>

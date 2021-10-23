@@ -12,7 +12,6 @@ interface Props extends TouchableOpacityProps {
 export const Button: React.FC<Props> = ({
   gradientColor,
   buttonText = 'button',
-  style,
   ...rest
 }) => {
   const { theme } = useTheme()
@@ -20,7 +19,7 @@ export const Button: React.FC<Props> = ({
     <LinearGradient
       colors={theme?.colors.gradient || gradientColor}
       style={styles.button}>
-      <TouchableOpacity style={[styles.button, style]} {...rest}>
+      <TouchableOpacity {...rest}>
         <Text style={styles.buttonText}>{buttonText}</Text>
       </TouchableOpacity>
     </LinearGradient>

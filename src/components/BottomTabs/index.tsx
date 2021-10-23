@@ -101,7 +101,14 @@ export const BottomTabs: React.FC<any> = ({
                 {options.icon && (
                   <Icon
                     {...options.icon}
-                    color={isFocused ? theme?.colors.primary : '#737373'}
+                    color={
+                      theme?.dark ? theme.colors.text : theme?.colors.primary
+                    }
+                    name={
+                      isFocused
+                        ? options.icon.name
+                        : `${options.icon.name}-outline`
+                    }
                   />
                 )}
                 {/* <Text

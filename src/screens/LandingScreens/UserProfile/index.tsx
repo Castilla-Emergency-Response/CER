@@ -10,7 +10,7 @@ import { ListButton } from './components'
 import { FirebaseService } from '../../../services/firebase.services'
 
 export const UserProfile: React.FC = () => {
-  const { theme } = useTheme()
+  const { theme, toggleDarkMode } = useTheme()
   const { user } = useSelector((state: RootState) => state.authReducer)
   const dispatch: AppDispatch = useDispatch()
 
@@ -36,7 +36,7 @@ export const UserProfile: React.FC = () => {
               }}>
               <Avatar.Icon
                 icon="pencil-outline"
-                color="#521918"
+                color={theme?.dark ? theme.colors.text : theme?.colors.primary}
                 size={30}
                 style={{
                   backgroundColor: theme?.colors.background,
@@ -47,7 +47,7 @@ export const UserProfile: React.FC = () => {
         </LinearGradient>
       </View>
       <View style={{ height: 1, backgroundColor: theme?.colors.border }} />
-      <ListButton buttonText="Preferences" />
+      <ListButton buttonText="Preferences" onPress={toggleDarkMode} />
       <ListButton buttonText="Terms and Conditions" />
       <ListButton buttonText="Privacy Policy" />
       <ListButton buttonText="Sign Out" onPress={signOut} />

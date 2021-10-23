@@ -48,7 +48,6 @@ export const LandingStackNavigation = () => {
   useEffect(() => {
     const subscriber = FirebaseService.auth.onAuthStateChanged((user) => {
       if (user) {
-        Toast.show(`Welcome ${user.displayName}!`, Toast.LONG)
         return setUid(user.uid)
       }
 

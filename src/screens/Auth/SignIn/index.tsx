@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import { Text, View, TouchableOpacity } from 'react-native'
+import { View, TouchableOpacity } from 'react-native'
+import { Text } from 'react-native-paper'
 import { useDispatch } from 'react-redux'
 
 import { AppDispatch } from '../../../store/types'
@@ -60,7 +61,13 @@ export const SignIn: React.FC = () => {
       <View style={styles.signUp}>
         <Text>Not yet registered? </Text>
         <TouchableOpacity onPress={() => navigation.navigate('Sign Up')}>
-          <Text style={[styles.signUpText, { color: theme?.colors.primary }]}>
+          <Text
+            style={[
+              styles.signUpText,
+              {
+                color: theme?.dark ? theme?.colors.text : theme?.colors.primary,
+              },
+            ]}>
             Sign Up
           </Text>
         </TouchableOpacity>

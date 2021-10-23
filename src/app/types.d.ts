@@ -15,7 +15,8 @@ export declare type Icon = {
     | 'octicon'
     | 'simple-line-icon'
     | 'zocial'
-  size: number
+  size?: number
+  color?: string
 }
 
 export declare type Screens = {

@@ -7,9 +7,10 @@ declare type String = {
 
 export default StyleSheet.create<String>({
   button: {
-    padding: 5,
+    padding: 10,
     marginHorizontal: 30,
     borderRadius: 20,
+    elevation: 5,
   },
   buttonText: {
     textTransform: 'uppercase',

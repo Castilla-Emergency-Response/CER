@@ -85,7 +85,6 @@ class Firebase {
       await currentUser_1.updateProfile({
         username,
         displayName: fullName,
-        profilePic: TEMPORARY_AVATAR,
       })
       return { user: app.auth().currentUser }
     } catch (err) {

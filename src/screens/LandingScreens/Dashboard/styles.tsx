@@ -3,9 +3,7 @@ import { StyleSheet, ViewStyle, TextStyle } from 'react-native'
 declare type Styles = {
   header: ViewStyle
   headerText: TextStyle
-  button: ViewStyle
   buttonWrapper: ViewStyle
-  buttonText: TextStyle
   location: ViewStyle
   locationText: TextStyle
 }
@@ -22,24 +20,11 @@ export default StyleSheet.create<Styles>({
     color: '#FFF',
     padding: 15,
   },
-  button: {
-    elevation: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 10,
-  },
   buttonWrapper: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 25,
     paddingHorizontal: 25,
-  },
-  buttonText: {
-    marginTop: 5,
-    textTransform: 'capitalize',
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#FFF',
   },
   location: {
     flexDirection: 'row',
@@ -49,7 +34,6 @@ export default StyleSheet.create<Styles>({
     padding: 3,
     marginTop: 20,
     borderWidth: 2,
-    borderColor: '#791718',
     borderRadius: 50,
   },
   locationText: {

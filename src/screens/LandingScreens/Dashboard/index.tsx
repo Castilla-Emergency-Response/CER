@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
-import { View, Text, TouchableOpacity, Dimensions } from 'react-native'
+import { View } from 'react-native'
+import { Text } from 'react-native-paper'
 import { useDispatch, useSelector } from 'react-redux'
 import { Icon } from 'react-native-elements'
 import LinearGradient from 'react-native-linear-gradient'
@@ -12,6 +13,7 @@ import { common } from './../../../constants/common'
 import { AppDispatch, RootState } from '../../../store/types'
 import { FirebaseService } from '../../../services/firebase.services'
 import { useTheme } from '../../../provider'
+import { RequestButton } from './components'
 
 export const Dashboard: React.FC = () => {
   const { user, loggedIn } = useSelector(
@@ -19,7 +21,6 @@ export const Dashboard: React.FC = () => {
   )
   const { theme } = useTheme()
   const dispatch: AppDispatch = useDispatch()
-  const buttonWidth = (Dimensions.get('screen').width - 80) / 2
 
   useEffect(() => {
     if (loggedIn) {
@@ -63,66 +64,36 @@ export const Dashboard: React.FC = () => {
       </View>
       <View>
         <View style={styles.buttonWrapper}>
-          <TouchableOpacity
-            style={[
-              styles.button,
-              {
-                height: buttonWidth,
-                width: buttonWidth,
-                backgroundColor: theme?.colors.primary,
-              },
-            ]}>
-            <Icon
-              name="hand-holding-medical"
-              type="font-awesome-5"
-              size={40}
-              color="#FFF"
-            />
-            <Text style={styles.buttonText}>{common.request[0]}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              styles.button,
-              {
-                height: buttonWidth,
-                width: buttonWidth,
-                backgroundColor: theme?.colors.primary,
-              },
-            ]}>
-            <Icon
-              name="police-badge"
-              type="material-community"
-              size={40}
-              color="#FFF"
-            />
-            <Text style={styles.buttonText}>{common.request[1]}</Text>
-          </TouchableOpacity>
+          <RequestButton
+            title={common.request[0]}
+            icon={{
+              name: 'hand-holding-medical',
+              type: 'font-awesome-5',
+            }}
+          />
+          <RequestButton
+            title={common.request[1]}
+            icon={{
+              name: 'police-badge',
+              type: 'material-community',
+            }}
+          />
         </View>
         <View style={styles.buttonWrapper}>
-          <TouchableOpacity
-            style={[
-              styles.button,
-              {
-                height: buttonWidth,
-                width: buttonWidth,
-                backgroundColor: theme?.colors.primary,
-              },
-            ]}>
-            <Icon name="fire" type="fontisto" size={40} color="#FFF" />
-            <Text style={styles.buttonText}>{common.request[2]}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              styles.button,
-              {
-                height: buttonWidth,
-                width: buttonWidth,
-                backgroundColor: theme?.colors.primary,
-              },
-            ]}>
-            <Icon name="medical" type="ionicon" size={40} color="#FFF" />
-            <Text style={styles.buttonText}>{common.request[3]}</Text>
-          </TouchableOpacity>
+          <RequestButton
+            title={common.request[2]}
+            icon={{
+              name: 'local-fire-department',
+              type: 'material',
+            }}
+          />
+          <RequestButton
+            title={common.request[3]}
+            icon={{
+              name: 'asterisk',
+              type: 'material-community',
+            }}
+          />
         </View>
       </View>
     </View>
