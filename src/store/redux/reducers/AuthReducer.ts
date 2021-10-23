@@ -22,6 +22,15 @@ export default (state = INITIAL_STATE, action: Action) => {
         user: action.payload,
       }
       return newState
+    case 'UPDATE_USER':
+      newState = {
+        ...state,
+        user: {
+          ...state.user,
+          ...action.payload,
+        },
+      }
+      return newState
     case 'RESET_USER':
       delete newState.user
       return newState

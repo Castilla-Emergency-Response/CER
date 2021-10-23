@@ -7,7 +7,7 @@ import { BottomTabs } from '../../components'
 
 const Tab = createBottomTabNavigator()
 
-export const LandingTabNavigation = () => {
+export const LandingTabNavigation: React.FC = () => {
   const { theme } = useTheme()
   return (
     <Tab.Navigator

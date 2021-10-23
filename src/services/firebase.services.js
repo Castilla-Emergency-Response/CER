@@ -13,7 +13,7 @@ class Firebase {
 
     this.authUser = {}
     this.auth = app.auth()
-    this.db = app.firestore()
+    this.store = app.firestore()
 
     this.auth.onAuthStateChanged((user) => {
       this.authUser = { user }
@@ -34,16 +34,6 @@ class Firebase {
     return []
   }
 
-  signIn({ email, password }) {
-    return this.auth
-      .signInWithEmailAndPassword(email, password)
-      .then((res) => res)
-      .catch((err) => {
-        errorHandler(err)
-        return err
-      })
-  }
-
   createUserProfile = ({
     id,
     username,
@@ -61,10 +51,8 @@ class Firebase {
         email,
         age: null,
         address: null,
-        location: {
-          long: '',
-          lat: '',
-        },
+        currentAddress: null,
+        position: null,
         online: true,
         userType: 'consumer',
         department: null,
@@ -73,35 +61,40 @@ class Firebase {
     })
   }
 
-  signUp({ fullName, username, email, password }) {
-    return this.auth
-      .createUserWithEmailAndPassword(email, password)
-      .then(() => app.auth().currentUser)
-      .then(async (currentUser) => {
-        await this.createUserProfile({
-          id: currentUser.uid,
-          email,
-          username,
-          fullName,
-        })
-
-        return currentUser
-      })
-      .then(async (currentUser) => {
-        await currentUser.updateProfile({
-          username,
-          displayName: fullName,
-          profilePic: TEMPORARY_AVATAR,
-        })
-      })
-      .then(() => ({ user: app.auth().currentUser }))
-      .catch((err) => {
-        errorHandler(err)
-        return err
-      })
+  signIn = async ({ email, password }) => {
+    try {
+      const res = await this.auth.signInWithEmailAndPassword(email, password)
+      return res
+    } catch (err) {
+      errorHandler(err)
+      return err
+    }
   }
 
-  updateProfile({ displayName, username, profilePic, ...rest }) {
+  signUp = async ({ fullName, username, email, password }) => {
+    try {
+      await this.auth.createUserWithEmailAndPassword(email, password)
+      const currentUser = app.auth().currentUser
+      await this.createUserProfile({
+        id: currentUser.uid,
+        email,
+        username,
+        fullName,
+      })
+      const currentUser_1 = await currentUser
+      await currentUser_1.updateProfile({
+        username,
+        displayName: fullName,
+        profilePic: TEMPORARY_AVATAR,
+      })
+      return { user: app.auth().currentUser }
+    } catch (err) {
+      errorHandler(err)
+      return err
+    }
+  }
+
+  updateProfile = async ({ displayName, username, profilePic, ...rest }) => {
     const profile = {
       username,
       displayName,
@@ -109,24 +102,116 @@ class Firebase {
       ...rest,
     }
 
-    return this.auth.currentUser.updateProfile(profile)
+    try {
+      return this.auth.currentUser.updateProfile(profile)
+    } catch (err) {
+      errorHandler(err)
+      return err
+    }
   }
 
-  signOut() {
-    return this.auth.signOut()
+  signOut = async () => {
+    try {
+      return this.auth.signOut()
+    } catch (err) {
+      errorHandler(err)
+      return err
+    }
   }
 
-  setDocument = ({ collection = 'users', doc, value = {} } = {}) => {
-    return this.db
-      .collection(collection)
-      .doc(doc)
-      .set(value)
-      .then((res) => res)
-      .catch((err) => err)
+  processSnapshot = ({ collection = 'users', doc }) => {
+    return this.store.collection(collection).doc(doc)
   }
 
-  processSnapshot({ collection = 'users', doc }) {
-    return this.db.collection(collection).doc(doc)
+  setDocument = async ({ collection = 'users', doc, value = {} } = {}) => {
+    try {
+      const res = await this.store.collection(collection).doc(doc).set(value)
+      return res
+    } catch (err) {
+      errorHandler(err)
+      return err
+    }
+  }
+
+  addDocument = async ({ collection = 'users', value = {} } = {}) => {
+    try {
+      const res = await this.store.collection(collection).add(value)
+      return res
+    } catch (err) {
+      errorHandler(err)
+      return err
+    }
+  }
+
+  updateDocument = async ({ collection = 'users', doc, value = {} } = {}) => {
+    try {
+      const res = await this.store.collection(collection).doc(doc).update(value)
+      return res
+    } catch (err) {
+      errorHandler(err)
+      return err
+    }
+  }
+
+  setSubDocument = async ({
+    collection = 'users',
+    subCollection,
+    doc,
+    subDoc,
+    value = {},
+  } = {}) => {
+    try {
+      const res = await this.store
+        .collection(collection)
+        .doc(doc)
+        .collection(subCollection)
+        .doc(subDoc)
+        .set(value)
+      return res
+    } catch (err) {
+      errorHandler(err)
+      return err
+    }
+  }
+
+  addSubDocument = async ({
+    collection = 'users',
+    subCollection,
+    doc,
+    value = {},
+  } = {}) => {
+    try {
+      const res = await this.store
+        .collection(collection)
+        .doc(doc)
+        .collection(subCollection)
+        .add(value)
+      return res
+    } catch (err) {
+      errorHandler(err)
+      return err
+    }
+  }
+
+  updateSubDocument = async ({
+    collection = 'users',
+    subCollection,
+    doc,
+    subDoc,
+    value = {},
+  } = {}) => {
+    try {
+      const res = await this.store
+        .collection(collection)
+        .doc(doc)
+        .collection(subCollection)
+        .doc(subDoc)
+        .update(value)
+      return res
+    } catch (err) {
+      errorHandler(err)
+      return err
+    }
   }
 }
 const TEMPORARY_AVATAR =

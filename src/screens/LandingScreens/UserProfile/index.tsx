@@ -3,7 +3,7 @@ import { Text, View, TouchableOpacity } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 import styles from './styles'
 import { useDispatch, useSelector } from 'react-redux'
-import { RootState } from '../../../store/types'
+import { AppDispatch, RootState } from '../../../store/types'
 import { Avatar } from 'react-native-paper'
 import { useTheme } from '../../../provider'
 import { ListButton } from './components'
@@ -12,7 +12,7 @@ import { FirebaseService } from '../../../services/firebase.services'
 export const UserProfile: React.FC = () => {
   const { theme } = useTheme()
   const { user } = useSelector((state: RootState) => state.authReducer)
-  const dispatch = useDispatch()
+  const dispatch: AppDispatch = useDispatch()
 
   const signOut = async () => {
     try {

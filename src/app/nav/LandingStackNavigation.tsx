@@ -12,6 +12,8 @@ import { AppDispatch, RootState } from '../../store/types'
 //screens
 import { SplashScreen } from '../../screens'
 import { FirebaseService } from '../../services/firebase.services'
+import Toast from 'react-native-simple-toast'
+import { permissions } from '../../utils'
 
 const Stack = createNativeStackNavigator()
 
@@ -22,6 +24,10 @@ export const LandingStackNavigation = () => {
   const [routes, setRoutes] = useState<Screens>([])
   const [loading, setLoading] = useState(true)
   const [uid, setUid] = useState<null | string>(null)
+
+  useEffect(() => {
+    permissions.location()
+  }, [])
 
   useEffect(() => {
     setRoutes(loggedIn ? landingStack : authStack)
@@ -39,8 +45,18 @@ export const LandingStackNavigation = () => {
   }, [uid])
 
   useEffect(() => {
+    if (uid) {
+      FirebaseService.updateDocument({ doc: uid, value: { online: true } })
+      return () => {
+        FirebaseService.updateDocument({ doc: uid, value: { online: false } })
+      }
+    }
+  }, [uid])
+
+  useEffect(() => {
     const subscriber = FirebaseService.auth.onAuthStateChanged((user) => {
       if (user) {
+        Toast.show(`Welcome ${user.displayName}!`, Toast.LONG)
         return setUid(user.uid)
       }
 

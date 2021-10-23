@@ -47,6 +47,7 @@ export default StyleSheet.create<Styles>({
     flexDirection: 'row',
     alignItems: 'center',
     marginHorizontal: 25,
+    paddingHorizontal: 5,
     padding: 3,
     marginTop: 20,
     borderWidth: 2,
@@ -56,5 +57,6 @@ export default StyleSheet.create<Styles>({
   locationText: {
     fontWeight: '700',
     fontSize: 16,
+    paddingHorizontal: 5,
   },
 })

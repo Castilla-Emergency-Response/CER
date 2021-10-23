@@ -20,7 +20,7 @@ export declare type Icon = {
 
 export declare type Screens = {
   name: string
-  component: React.FC
+  component: React.FC<any>
   options?: {
     icon?: Icon
   }
