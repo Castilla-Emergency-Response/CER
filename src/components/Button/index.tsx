@@ -1,6 +1,7 @@
 import React from 'react'
 import { TouchableOpacity, Text, TouchableOpacityProps } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
+import { useTheme } from '../../provider'
 import styles from './styles'
 
 interface Props extends TouchableOpacityProps {
@@ -14,9 +15,10 @@ export const Button: React.FC<Props> = ({
   style,
   ...rest
 }) => {
+  const { theme } = useTheme()
   return (
     <LinearGradient
-      colors={gradientColor || ['#d12222', '#521918']}
+      colors={theme?.colors.gradient || gradientColor}
       style={styles.button}>
       <TouchableOpacity style={[styles.button, style]} {...rest}>
         <Text style={styles.buttonText}>{buttonText}</Text>

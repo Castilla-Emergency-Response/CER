@@ -40,10 +40,8 @@ export const SignIn: React.FC = () => {
         <AlertButton />
       </View>
       <Text style={[styles.text, { fontSize: 20, marginBottom: 10 }]}>
-        Welcome to
-        <Text style={{ color: '#000' }}> Castilla</Text>
-        {'\n'}
-        <Text style={{ color: '#c70d05' }}>Emergency Response</Text>
+        Welcome to Castilla{'\n'}
+        Emergency Response
       </Text>
       <Input
         placeholder="Email"

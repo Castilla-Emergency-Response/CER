@@ -10,7 +10,6 @@ export default StyleSheet.create<String>({
     marginHorizontal: 30,
     marginBottom: 15,
     borderRadius: 30,
-    borderColor: '#791718',
     borderWidth: 1,
   },
   textInput: {

@@ -40,16 +40,8 @@ export const LandingStackNavigation = () => {
       }).onSnapshot((snapshot) =>
         dispatch({ type: 'SET_USER', payload: snapshot.data() }),
       )
-      return subscriber
-    }
-  }, [uid])
 
-  useEffect(() => {
-    if (uid) {
-      FirebaseService.updateDocument({ doc: uid, value: { online: true } })
-      return () => {
-        FirebaseService.updateDocument({ doc: uid, value: { online: false } })
-      }
+      return subscriber
     }
   }, [uid])
 
@@ -70,7 +62,7 @@ export const LandingStackNavigation = () => {
     if (routes.length !== 0) {
       setTimeout(() => {
         setLoading(false)
-      }, 3000)
+      }, 1500)
     }
   }, [routes])
 

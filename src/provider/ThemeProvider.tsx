@@ -33,8 +33,8 @@ export const ThemeProvider: React.FC = ({ children }) => {
               theme,
             }}>
             <StatusBar
-              backgroundColor={theme.dark ? theme.colors.background : '#d12222'}
-              barStyle="light-content"
+              backgroundColor={theme.dark ? theme.colors.background : '#00ff00'}
+              barStyle="dark-content"
             />
 
             {children}

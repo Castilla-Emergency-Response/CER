@@ -14,7 +14,6 @@ export default StyleSheet.create<Styles>({
   header: {
     flexGrow: 1,
     justifyContent: 'flex-end',
-    backgroundColor: '#791718',
     height: 150,
   },
   headerText: {
@@ -25,7 +24,6 @@ export default StyleSheet.create<Styles>({
   },
   button: {
     elevation: 10,
-    backgroundColor: '#791718',
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10,

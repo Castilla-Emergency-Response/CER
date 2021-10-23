@@ -1,21 +1,27 @@
 import React from 'react'
 import { TouchableOpacity, TouchableOpacityProps, View } from 'react-native'
 import { Icon } from 'react-native-elements'
+import { useTheme } from '../../provider'
 
 export const AlertButton: React.FC<TouchableOpacityProps> = (props) => {
+  const { theme } = useTheme()
   return (
     <TouchableOpacity {...props}>
       <View
-        style={{ backgroundColor: '#fbbbbc', padding: 20, borderRadius: 150 }}>
+        style={{
+          backgroundColor: theme?.colors.green3,
+          padding: 20,
+          borderRadius: 150,
+        }}>
         <View
           style={{
-            backgroundColor: '#f98887',
+            backgroundColor: theme?.colors.green2,
             padding: 20,
             borderRadius: 100,
           }}>
           <View
             style={{
-              backgroundColor: '#d00e00',
+              backgroundColor: theme?.colors.green1,
               padding: 20,
               borderRadius: 50,
             }}>

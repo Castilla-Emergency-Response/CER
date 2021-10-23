@@ -45,14 +45,8 @@ export const SignUp: React.FC = () => {
     <View style={styles.wrapper}>
       <View style={{ marginBottom: 10 }}>
         <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-          <Text style={[styles.text, { fontSize: 20, color: '#000' }]}>
-            Castilla
-          </Text>
-          <Text
-            style={[
-              styles.text,
-              { fontSize: 20, color: '#c70d05', marginLeft: 5 },
-            ]}>
+          <Text style={[styles.text, { fontSize: 20 }]}>Castilla</Text>
+          <Text style={[styles.text, { fontSize: 20, marginLeft: 5 }]}>
             Emergency
           </Text>
         </View>
@@ -62,14 +56,8 @@ export const SignUp: React.FC = () => {
             justifyContent: 'center',
             marginTop: -20,
           }}>
-          <Text style={[styles.text, { fontSize: 20, color: '#c70d05' }]}>
-            Response
-          </Text>
-          <Text
-            style={[
-              styles.text,
-              { fontSize: 20, color: '#000', marginLeft: 5 },
-            ]}>
+          <Text style={[styles.text, { fontSize: 20 }]}>Response</Text>
+          <Text style={[styles.text, { fontSize: 20, marginLeft: 5 }]}>
             Registration
           </Text>
         </View>

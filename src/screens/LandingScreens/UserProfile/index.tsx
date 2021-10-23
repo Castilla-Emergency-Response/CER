@@ -25,7 +25,7 @@ export const UserProfile: React.FC = () => {
   return (
     <View>
       <View style={[styles.parent]}>
-        <LinearGradient colors={['#d12222', '#521918']} style={[styles.child]}>
+        <LinearGradient colors={theme?.colors.gradient} style={[styles.child]}>
           <View style={styles.wrapper}>
             <Text style={styles.headerText}>{user?.fullName}</Text>
             <Avatar.Image source={{ uri: user?.profilePic }} size={120} />
